@@ -40,6 +40,23 @@ void deterministicQuickSort(int low, int high, vector<int>& arr) {
     }
 }
 
+// Partition function for randomized quicksort (random pivot)
+int partitionRandom(int low, int high, vector<int>& arr) {
+    int randomPivotIndex = low + rand() % (high - low + 1);
+    swap(arr[low], arr[randomPivotIndex]); // Move random pivot to start
+    return partitionDeterministic(low, high, arr); // Use deterministic partition
+}
+
+// Randomized Quick Sort (using random pivot)
+void randomizedQuickSort(int low, int high, vector<int>& arr) {
+    if (low < high) {
+        randomizedCount++; // Count recursive call
+        int partitionIndex = partitionRandom(low, high, arr);
+        randomizedQuickSort(low, partitionIndex - 1, arr);
+        randomizedQuickSort(partitionIndex + 1, high, arr);
+    }
+}
+
 int main()
 {
 //     vector<int> arr = {1,3,6,4,7,2};
