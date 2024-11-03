@@ -1,57 +1,70 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int partition(int low,int high,vector<int> &arr){
+int deterministicCount = 0; // Count recursive calls for deterministic quicksort
+int randomizedCount = 0;    // Count recursive calls for randomized quicksort
+
+// Partition function using first element as pivot (for deterministic quicksort)
+int partitionDeterministic(int low, int high, vector<int>& arr) {
     int pivot = arr[low];
     int i = low;
     int j = high;
-    while(i < j){
-        // from left find bigger element than pivot
-        // from right find smaller element than pivot
-        while(i <= high && arr[i] <= pivot){
+
+    while (i < j) {
+        // from left, find element greater than pivot
+        while (i <= high && arr[i] <= pivot) {
             i++;
         }
-        while(j >= low && arr[j] > pivot){
+        // from right, find element smaller than pivot
+        while (j >= low && arr[j] > pivot) {
             j--;
         }
-        
-        // swap if i and j has not crossed each other
-        if(i < j){
-            int temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
+        // swap if i and j have not crossed each other
+        if (i < j) {
+            swap(arr[i], arr[j]);
         }
     }
-    
-    // swap pivot (element at index low) and element at index j  as j < i
-    int temp = arr[j];
-    arr[j] = arr[low];
-    arr[low] = temp;
+
+    // Swap pivot (element at index low) and element at index j as j < i
+    swap(arr[j], arr[low]);
     return j;
-    
 }
 
-void quickSort(int low,int high,vector<int> &arr){
-    if(low >= high){
-        return;
+// Deterministic Quick Sort (using first element as pivot)
+void deterministicQuickSort(int low, int high, vector<int>& arr) {
+    if (low < high) {
+        deterministicCount++; // Count recursive call
+        int partitionIndex = partitionDeterministic(low, high, arr);
+        deterministicQuickSort(low, partitionIndex - 1, arr);
+        deterministicQuickSort(partitionIndex + 1, high, arr);
     }
-    int partitionIndex = partition(low,high,arr);
-    quickSort(low,partitionIndex-1,arr);
-    quickSort(partitionIndex+1,high,arr);
 }
 
 int main()
 {
 //     vector<int> arr = {1,3,6,4,7,2};
 // 	int n = 6;
-        vector<int> arr = {6,2,1,4,3,4,7};
-	int n = 7;
+    vector<int> arr = {6,2,1,4,3,4,7};
+    int n = 7;
+    vector<int> arrCopy1 = arr;
+    vector<int> arrCopy2 = arr;
 
-	quickSort(0,n-1,arr);
-	
-	for(auto x:arr){
-	    cout<<x<<" ";
-	}
+    deterministicCount = 0;
+    randomizedCount = 0;
+
+    deterministicQuickSort(0, n - 1, arrCopy1);
+    randomizedQuickSort(0, n - 1, arrCopy2);
+    cout << "Sorted Array using Deterministic Quick Sort: ";
+    for (auto x : arrCopy1) {
+	cout << x << " ";
+    }
+    cout << "\nDeterministic Quick Sort Recursive Calls: " << deterministicCount << endl;
+
+    cout << "Sorted Array using Randomized Quick Sort: ";
+    for (auto x : arrCopy2) {
+	cout << x << " ";
+    }
+    cout << "\nRandomized Quick Sort Recursive Calls: " << randomizedCount << endl;
 
     return 0;
 }
