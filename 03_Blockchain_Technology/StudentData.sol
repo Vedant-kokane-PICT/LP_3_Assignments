@@ -34,8 +34,10 @@ contract StudentData {
         require(studentArray.length > index, "Out of Index");
         return studentArray[index];
     }
-
+    
     // Fallback function for handling unknown function calls
+    // The fallback function in Solidity is a special function that is executed when a contract receives
+    // Ether along with a call to a function that does not exist in the contract, or if no data is supplied with the transaction
     fallback() external payable {
         // Optionally, handle the call or log it
     }
