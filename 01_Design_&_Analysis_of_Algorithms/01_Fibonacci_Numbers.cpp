@@ -11,6 +11,7 @@ int helper1(int n){
 } 
 
 // using iterative approach
+//  TC - O(N) , SC - O(1) 
 int helper2(int n){
     int first = 0;
     int second = 1;
