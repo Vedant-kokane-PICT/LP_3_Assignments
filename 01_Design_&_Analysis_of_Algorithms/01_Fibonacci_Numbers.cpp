@@ -2,6 +2,7 @@
 using namespace std;
 
 // Using recursive approach
+// TC - O(2^N) , SC - O(N) (stack space)
 int helper1(int n){
     if(n <= 1){
         return n;
